@@ -1,6 +1,4 @@
-# betchain
-
-> BetChain
+> My Cli
 
 ## Build Setup
 
