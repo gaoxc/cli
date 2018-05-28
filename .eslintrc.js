@@ -57,5 +57,6 @@ module.exports = {
       'no-dupe-args': 'error',
       // 禁止在对象字面量中出现重复名称的键名
       'no-dupe-keys': 'error',
+      'vue/no-parsing-error': [2, { 'x-invalid-end-tag': false }]
   }
 }
