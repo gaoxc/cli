@@ -45,4 +45,11 @@ util.toDefaultPage = function (routers, name, route, next) {
     }
 };
 
+util.openNewPage = (vm, name, query) => {
+    vm.$router.push({
+        name,
+        query
+    });
+}
+
 export default util;
