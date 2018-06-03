@@ -1,0 +1,65 @@
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin borderLeft{
+    content: '';  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    border-left: 1px solid #ccc;  
+    width: 200%;  
+    height: 200%;  
+    transform: scale(0.5);
+    transform-origin: left top;  
+}
+@mixin borderRight{
+    content: '';  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    border-right: 1px solid #ccc;  
+    width: 200%;  
+    height: 200%;  
+    transform: scale(0.5);
+    transform-origin: left top;    
+}
+@mixin borderTop{
+    content: '';  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    border-top: 1px solid #ccc;  
+    width: 200%;  
+    height: 200%;  
+    transform: scale(0.5);
+    transform-origin: left top;    
+}
+@mixin borderBottom{
+    content: '';  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    border-bottom: 1px solid #ccc;  
+    width: 200%;  
+    height: 200%;  
+    transform: scale(0.5);
+    transform-origin: left top;   
+}
+@mixin borderBox{
+    content: '';  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    border: 1px solid #ccc;  
+    width: 200%;  
+    height: 200%;  
+    transform: scale(0.5);
+    transform-origin: left top;    
+}
