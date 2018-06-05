@@ -1,15 +1,15 @@
 <template>
     <div class="handicap">
         <Tabs value="name1">
-            <TabPane label="标签一" name="name1">
+            <TabPane label="比赛未开始" name="name1">
             </TabPane>
-            <TabPane label="标签二" name="name2">
+            <TabPane label="比赛已结束" name="name2">
             </TabPane>
         </Tabs>
         <handicapclose></handicapclose>
         <handicapopen></handicapopen>
         <div class="handicap_page">
-            <Page :total="100"></Page>
+            <Page :total="10"></Page>
         </div>
     </div>
 </template>

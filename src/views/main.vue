@@ -38,6 +38,13 @@
             </Dropdown>
         </div>
         <div class="container">
+            <div class="bread">
+                <Breadcrumb separator=">">
+                        <BreadcrumbItem :style="{'color':'#fff'}" to="/">Home</BreadcrumbItem>
+                        <BreadcrumbItem to="/components/breadcrumb">Components</BreadcrumbItem>
+                        <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+                </Breadcrumb>
+            </div>
             <router-view></router-view>
         </div>
     </div>
@@ -58,6 +65,11 @@
             hander (name) {
                 utils.openNewPage(this, name);
             }
+        },
+        watch: {
+            '$route' (val) {
+                console.log(val);
+            }
         }
     }
 </script>
@@ -75,6 +87,14 @@
     .header_setting{
         height: 60px;
         line-height: 67px;
+    }
+    .bread{
+        background-color: #666;
+        color: #fff !important;
+        font-size: 12;
+        .ivu-breadcrumb-item-link{
+            color: #fff !important;
+        }
     }
     
 </style>
