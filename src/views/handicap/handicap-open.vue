@@ -71,19 +71,24 @@
             <Col span="4">
                 <div>
                     开赛前
-                    <i-select>
-                        <i-option value="1">1</i-option>
-                        <i-option value="2">2</i-option>
-                    </i-select>
-                    <!-- <Select v-model="day" size="small" style="width:100px">
-                        <Option v-for="item in dayList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    <!-- <Select v-model="switch1" style="z-index: 10">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
                     </Select> -->
+                    <Select v-model="day" size="small" style="z-index: 10;width:50px;display:inline">
+                        <Option v-for="item in dayList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
                     天自动创建
                 </div>
-                <Button type="primary">立即手动动创建</Button>
+                <div>
+                    <Button type="primary">立即手动动创建</Button>
+                </div>
+                
             </Col>
             <Col span="3">
-                <Switch v-model="switch1" @on-change="change"></Switch>
+                <div style="flex:1">
+                    <i-switch v-model="switch1" @on-change="change" style="z-index:10"></i-switch>
+                </div>
             </Col>
         </Row>
     </div>
