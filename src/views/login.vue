@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
+import store from 'store';
 export default {
     data () {
         return {
@@ -60,11 +60,27 @@ export default {
         handleSubmit () {
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
-                    Cookies.set('user', this.form.userName);
-                    Cookies.set('password', this.form.password);
-                    this.$router.push({
-                        name: 'home_index'
-                    });
+                    this.$http.post('/admin/login', {
+                        "password": this.form.password,
+                        "userName": this.form.userName
+                    })
+                    .then((res) => {
+                        console.log(res);
+                        if (res.data.data && res.data.data.token) {
+                            // 登陆成功
+                            store.set('tokenObj', res.data.data);
+                            this.$router.push({
+                                name: 'home_index'
+                            });
+                        } else {
+                            this.$Message.info(res.data.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        this.$Message.info('系统异常，稍后重试');
+                    })
+                    // Cookies.set('user', this.form.userName);
+                    // Cookies.set('password', this.form.password);
                 }
             });
         }

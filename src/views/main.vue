@@ -38,26 +38,29 @@
             </Dropdown>
         </div>
         <div class="container">
-            <div class="bread">
-                <Breadcrumb separator=">">
-                        <BreadcrumbItem :style="{'color':'#fff'}" to="/">Home</BreadcrumbItem>
-                        <BreadcrumbItem to="/components/breadcrumb">Components</BreadcrumbItem>
-                        <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
-                </Breadcrumb>
-            </div>
             <router-view></router-view>
         </div>
     </div>
 </template>
 <script>
     import utils from '@/libs/utils';
-    import Cookies from 'js-cookie';
+    import store from 'store';
 
     export default {
         methods: {
             handleClickUserDropdown () {
-                Cookies.set('user', '');
-                utils.openNewPage(this, 'login');
+                this.$http.post('/admin/logout', {}, {
+                    headers: {
+                        ADMIN_TOKEN: store.get('tokenObj').token
+                    }
+                })
+                .then(() => {
+                    store.set('tokenObj', {});
+                    utils.openNewPage(this, 'login');
+                })
+                .catch(() => {
+                    this.$Message.info('登出失败，请稍后重试');
+                })
             },
             handleSetting () {
                 utils.openNewPage(this, 'setting_index');

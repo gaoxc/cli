@@ -1,16 +1,13 @@
 <template>
     <div class="handicap">
-        <Tabs value="name1">
-            <TabPane label="比赛未开始" name="name1">
+        <Tabs :value="status" @on-click="changeTab">
+            <TabPane label="比赛未开始" name="open">
             </TabPane>
-            <TabPane label="比赛已结束" name="name2">
+            <TabPane label="比赛已结束" name="close">
             </TabPane>
         </Tabs>
-        <handicapclose></handicapclose>
-        <handicapopen></handicapopen>
-        <div class="handicap_page">
-            <Page :total="10"></Page>
-        </div>
+        <handicapclose v-if="status === 'close'"></handicapclose>
+        <handicapopen v-if="status === 'open'"></handicapopen>
     </div>
 </template>
 <script>
@@ -24,8 +21,16 @@
         data () {
             return {
                 handicapType: '0',
-                handicapStatus: '0'
+                handicapStatus: '0',
+                status: 'open'
             }
+        },
+        methods: {
+            changeTab (name) {
+                this.status = name;
+            }
+        },
+        mounted () {
         }
     }
 </script>
