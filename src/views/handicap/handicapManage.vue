@@ -11,7 +11,7 @@
             </TabPane>
         </Tabs>
         <handicapclose :data1="data1" v-if="status === 'close'"></handicapclose>
-        <handicapopen :data1="data1" v-if="status === 'open'"></handicapopen>
+        <handicapopen :data1="data1" v-if="status === 'INIT' || status === 'OPEN' || status === 'SUSPEND'"></handicapopen>
         <div class="btn">
             <Button type="primary" :disabled="canotPrev" @click="prev">
                 上一页
@@ -68,7 +68,8 @@
                 this.$http.post('/adminGame/gameInfoList', {
                     "gameGroupCode": "1212",
                     "pageNo": this.pageNo,
-                    "pageSize": this.pageSize
+                    "pageSize": this.pageSize,
+                    GameStatus: this.status
                 }, {
                     headers: {
                         ADMIN_TOKEN: store.get('tokenObj').token

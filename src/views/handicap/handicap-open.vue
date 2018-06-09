@@ -68,18 +68,18 @@
             </Col>
             <Col span="4">
                 <div class="div3 flex-span">
-                    <Button type="primary">立即手动动创建</Button>
+                    <Button type="primary" :disabled="item.mainHandicap.status !== 'INIT'">立即手动动创建</Button>
                 </div>
                 <div class="div2 flex-span">
-                    <Button type="primary">立即手动动创建</Button>
+                    <Button type="primary" :disabled="item.asiaHandicap.status !== 'INIT'">立即手动动创建</Button>
                 </div>
             </Col>
             <Col span="3">
                 <div class="div3">
-                    <i-switch v-model="item.displayFlag" @on-change="change(flag, item)" style="z-index:10"></i-switch>
+                    <i-switch v-model="item.mainHandicap.displayFlag" @on-change="change(item.mainHandicap)" style="z-index:10"></i-switch>
                 </div>
                 <div class="div2">
-                    <i-switch v-model="item.displayFlag" @on-change="change(flag, item)" style="z-index:10"></i-switch>
+                    <i-switch v-model="item.asiaHandicap.displayFlag" @on-change="change(item.asiaHandicap)" style="z-index:10"></i-switch>
                 </div>
             </Col>
         </Row>
@@ -123,23 +123,32 @@
                     item.homeName = item.homeList[0].name;
                     item.awayName = item.awayList[0].name;
                     if (item.handicapList.length > 0) {
-                        item.mainHandicap = item.handicapList[0];
-                        item.asiaHandicap = item.handicapList[1];
-                        item.mainHandicapList = JSON.parse(item.handicapList[0].odds.content);
-                        item.asiaHandicapList = JSON.parse(item.handicapList[1].odds.content);
+                        item.mainHandicap = item.handicapList.find(item => {
+                            return item.handicapType === 'main_full_time_resul';
+                        });
+                        if (item.mainHandicap) {
+                            item.mainHandicap.displayFlag = item.mainHandicap.display === 'YES';
+                            item.mainHandicapList = JSON.parse(item.handicapList[0].odds.content);
+                        }
+                        item.asiaHandicap = item.handicapList.find(item => {
+                            return item.handicapType === 'asian_lines_asian_handicap';
+                        });
+                        if (item.asiaHandicap) {
+                            item.asiaHandicap.displayFlag = item.asiaHandicap.display === 'YES';
+                            item.asiaHandicapList = JSON.parse(item.handicapList[1].odds.content);
+                        }
                     }
                     return item;
                 })
             }
         },
         methods: {
-            change (flag, item) {
-                console.log(flag, item);
+            change (handicap) {
                 this.$http.post('/adminGame/editGameStatus', {
-                    "display": item.displayFlag ? 'YES' : 'NO',
-                    "gameId": item.id,
-                    "id": item.id,
-                    "status": item.status
+                    "display": handicap.displayFlag ? 'YES' : 'NO',
+                    "gameId": handicap.id,
+                    "id": handicap.id,
+                    "status": handicap.status
                 },{
                     headers: {
                         ADMIN_TOKEN: store.get('tokenObj').token
