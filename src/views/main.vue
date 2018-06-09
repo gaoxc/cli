@@ -8,7 +8,11 @@
                         <Icon type="ios-paper"></Icon>
                         盘口管理
                     </MenuItem>
-                    <Submenu name="3">
+                    <MenuItem name="handicap_money">
+                        <Icon type="ios-paper"></Icon>
+                        资金管理
+                    </MenuItem>
+                    <!-- <Submenu name="3">
                         <template slot="title">
                             <Icon type="stats-bars"></Icon>
                             资金管理
@@ -17,7 +21,7 @@
                             <MenuItem name="handicap_money">盘口资金</MenuItem>
                             <MenuItem name="water_money">抽水资金</MenuItem>
                         </MenuGroup>
-                    </Submenu>
+                    </Submenu> -->
                     <!-- <MenuItem name="4" disabled>
                         <Icon type="settings"></Icon>
                         用户管理

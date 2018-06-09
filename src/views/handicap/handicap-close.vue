@@ -9,21 +9,21 @@
             <Col span="2">赔率</Col>
             <Col span="4">盘口状态</Col>
         </Row>
-        <Row type="flex" justify="center" class="table-row">
+        <Row type="flex" justify="center" class="table-row" v-for="item in openData" v-if="item.handicapList.length > 0">
             <Col span="4">
-                <span>2018/5/10</span>
-                <span>0:0:10</span>
+                <span>{{dayjs(item.kickOffTime).format('YYYY-MM-DD')}}</span>
+                <span>{{dayjs(item.kickOffTime).format('HH:mm')}}</span>
             </Col>
             <Col span="4">
-                <span>德国 - 哥斯达黎加</span>
+                <span>{{item.homeList[0].name}} - {{item.awayList[0].name}}</span>
                 <span>未开始</span>
             </Col>
             <Col span="4">
                 <div class="div3">
-                    12312312
+                    {{item.handicapList[0].odds.handicapId}}
                 </div>
                 <div class="div2">
-                    123123123
+                    {{item.handicapList[1].odds.handicapId}}
                 </div>
             </Col>
             <Col span="4">
@@ -36,42 +36,116 @@
             </Col>
             <Col span="2">
                 <div class="div3 flex-span">
-                    <span>1</span>
-                    <span>2</span>
-                    <span>x</span>
+                    <span v-for="i in item.mainHandicapList">{{i.opp}}</span>
+                    <!-- <span>2</span>
+                    <span>x</span> -->
                 </div>
                 <div class="div2 flex-span">
-                    <span>-1.0</span>
-                    <span>+1.0</span>
+                    <span v-for="i in item.asiaHandicapList">{{i.opp}}</span>
                 </div>
             </Col>
             <Col span="2">
                 <div class="div3 flex-span">
-                    <span>1.78</span>
-                    <span>2.18</span>
-                    <span>1.0</span>
+                    <span v-for="i in item.mainHandicapList">{{i.odds}}</span>
+                    <!-- <span>2.18</span>
+                    <span>1.0</span> -->
                 </div>
                 <div class="div2 flex-span">
-                    <span>1.34</span>
-                    <span>1.45</span>
+                    <span v-for="i in item.asiaHandicapList">{{i.odds}}</span>
                 </div>
             </Col>
             <Col span="4">
                 <div class="div3">
-                    <span>盘口: 已关闭</span>
-                    <span>前端: 隐藏</span>
+                    <span>盘口: {{item.mainHandicap.status === "OPEN" ? '已创建' : '未创建'}}</span>
+                    <span>前端: {{item.mainHandicap.display === "YES" ? '显示' : '隐藏'}}</span>
                 </div>
                 <div class="div2">
-                    <span>盘口: 已关闭</span>
-                    <span>前端: 隐藏</span>
+                    <span>盘口: {{item.asiaHandicap.status === "OPEN" ? '已创建' : '未创建'}}</span>
+                    <span>前端: {{item.asiaHandicap.display === "YES" ? '显示' : '隐藏'}}</span>
                 </div>
             </Col>
         </Row>
     </div>
 </template>
 <script>
+    import dayjs from 'dayjs';
+    import store from 'store';
     export default {
-        
+        props: {
+            data1:{
+                default: []
+            }
+        },
+        data () {
+            return {
+                switch1: true,
+                day: 1,
+                dayList: [
+                    {
+                        label: 1,
+                        value: '1'
+                    },
+                    {
+                        label: 2,
+                        value: '2'
+                    },
+                    {
+                        label: 3,
+                        value: '3'
+                    }
+                ]
+            };
+        },
+        computed: {
+            openData () {
+                return this.data1.map(item => {
+                    item.date = dayjs(item.kickOffTime).format('YYYY-MM-DD');
+                    item.time = dayjs(item.kickOffTime).format('HH:mm');
+                    item.displayFlag = item.display === 'YES';
+                    item.homeName = item.homeList[0].name;
+                    item.awayName = item.awayList[0].name;
+                    if (item.handicapList.length > 0) {
+                        item.mainHandicap = item.handicapList[0];
+                        item.asiaHandicap = item.handicapList[1];
+                        item.mainHandicapList = JSON.parse(item.handicapList[0].odds.content);
+                        item.asiaHandicapList = JSON.parse(item.handicapList[1].odds.content);
+                    }
+                    return item;
+                })
+            }
+        },
+        methods: {
+            change (flag, item) {
+                console.log(flag, item);
+                this.$http.post('/adminGame/editGameStatus', {
+                    "display": item.displayFlag ? 'YES' : 'NO',
+                    "gameId": item.id,
+                    "id": item.id,
+                    "status": item.status
+                },{
+                    headers: {
+                        ADMIN_TOKEN: store.get('tokenObj').token
+                    }
+                })
+                .then((res) => {
+                    this.$Message.info('状态修改成功');
+                })
+                .catch(() => {
+                    this.$Message.err('系统异常，请稍后重试');
+                })
+            },
+            dayjs: dayjs
+        },
+        mounted () {
+            console.log(this.data1);
+            this.data1 = this.data1.map(item => {
+                item.date = dayjs(item.kickOffTime).format('YYYY-MM-DD');
+                item.time = dayjs(item.kickOffTime).format('HH:mm');
+                item.homeName = item.homeList[0].name;
+                item.awayName = item.awayList[0].name;
+                return item;
+            })
+        }
     }
 </script>
 <style lang="scss" scoped>
@@ -137,5 +211,3 @@
         }
     }
 </style>
-
-

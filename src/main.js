@@ -12,7 +12,7 @@ import 'iview/dist/styles/iview.css';
 import axios from 'axios';
 let env = process.env.NODE_ENV;
 const ajaxUrl = env === 'development'
-    ? 'http://47.105.45.112'
+    ? 'http://47.105.45.112/api'
     : env === 'production'
         ? 'https://www.url.com'
         : 'https://debug.url.com';

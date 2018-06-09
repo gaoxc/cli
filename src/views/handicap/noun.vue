@@ -80,7 +80,6 @@
                     oddObj,
                     value: 0
                 };
-                console.log(obj);
                 this.$store.commit('addBetArray', obj);
             },
             asianLinesAsianHandicapOddsHander (e, oddObj, index) {
