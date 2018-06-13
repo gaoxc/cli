@@ -10,8 +10,8 @@
             <TabPane label="已暂停（SUSPEND）" name="SUSPEND">
             </TabPane>
         </Tabs>
-        <handicapclose :data1="data1" v-if="status === 'close'"></handicapclose>
-        <handicapopen :data1="data1" v-if="status === 'INIT' || status === 'OPEN' || status === 'SUSPEND'"></handicapopen>
+        <handicapclose :handicap-list="handicapList" v-if="status === 'CLOSE'"></handicapclose>
+        <handicapopen :handicap-list="handicapList" v-if="status === 'INIT' || status === 'OPEN' || status === 'SUSPEND'"></handicapopen>
         <div class="btn">
             <Button type="primary" :disabled="canotPrev" @click="prev">
                 上一页
@@ -27,6 +27,7 @@
     import handicapopen from './handicap-open';
 
     import store from 'store';
+    import dayjs from 'dayjs';
     export default {
         components: {
             handicapclose,
@@ -39,7 +40,7 @@
                 status: 'INIT',
                 pageNo: 1,
                 pageSize: 10,
-                data1: []
+                handicapList: []
             }
         },
         computed: {
@@ -47,7 +48,7 @@
                 return this.pageNo === 1;
             },
             canotNext () {
-                return this.data1.length < this.pageSize;
+                return this.handicapList.length < this.pageSize;
             }
         },
         methods: {
@@ -69,15 +70,38 @@
                     "gameGroupCode": "1212",
                     "pageNo": this.pageNo,
                     "pageSize": this.pageSize,
-                    GameStatus: this.status
+                    "gameStatus": this.status
                 }, {
                     headers: {
                         ADMIN_TOKEN: store.get('tokenObj').token
                     }
                 })
                 .then((res) => {
-                    console.log(res.data.data);
-                    this.data1 = res.data.data;
+                    this.handicapList = res.data.data;
+                    this.handicapList.map(item => {
+                        item.date = dayjs(item.kickOffTime).format('YYYY-MM-DD');
+                        item.time = dayjs(item.kickOffTime).format('HH:mm');
+                        item.displayFlag = item.display === 'YES';
+                        item.homeName = item.homeList[0].name;
+                        item.awayName = item.awayList[0].name;
+                        if (item.handicapList.length > 0) {
+                            item.mainHandicap = item.handicapList.find(item => {
+                                return item.handicapType === 'main_full_time_resul';
+                            });
+                            if (item.mainHandicap) {
+                                item.mainHandicap.displayFlag = item.mainHandicap.display === 'YES';
+                                item.mainHandicapList = JSON.parse(item.handicapList[0].odds.content);
+                            }
+                            item.asiaHandicap = item.handicapList.find(item => {
+                                return item.handicapType === 'asian_lines_asian_handicap';
+                            });
+                            if (item.asiaHandicap) {
+                                item.asiaHandicap.displayFlag = item.asiaHandicap.display === 'YES';
+                                item.asiaHandicapList = JSON.parse(item.handicapList[1].odds.content);
+                            }
+                        }
+                        return item;
+                    })
                 })
             }
         },

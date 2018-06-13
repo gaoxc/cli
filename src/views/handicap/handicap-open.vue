@@ -11,7 +11,7 @@
             <Col span="4">盘口创建</Col>
             <Col span="3">前端显示/隐藏</Col>
         </Row>
-        <Row type="flex" justify="center" class="table-row" v-for="item in openData" v-if="item.handicapList.length > 0" :key="item.id">
+        <Row type="flex" justify="center" class="table-row" v-for="item in  handicapList" v-if="item.handicapList.length > 0" :key="item.id">
             <Col span="3">
                 <span>{{dayjs(item.kickOffTime).format('YYYY-MM-DD')}}</span>
                 <span>{{dayjs(item.kickOffTime).format('HH:mm')}}</span>
@@ -90,7 +90,7 @@
     import store from 'store';
     export default {
         props: {
-            data1:{
+            handicapList:{
                 default: []
             }
         },
@@ -111,36 +111,9 @@
                         label: 3,
                         value: '3'
                     }
-                ]
+                ],
+                openData: []
             };
-        },
-        computed: {
-            openData () {
-                return this.data1.map(item => {
-                    item.date = dayjs(item.kickOffTime).format('YYYY-MM-DD');
-                    item.time = dayjs(item.kickOffTime).format('HH:mm');
-                    item.displayFlag = item.display === 'YES';
-                    item.homeName = item.homeList[0].name;
-                    item.awayName = item.awayList[0].name;
-                    if (item.handicapList.length > 0) {
-                        item.mainHandicap = item.handicapList.find(item => {
-                            return item.handicapType === 'main_full_time_resul';
-                        });
-                        if (item.mainHandicap) {
-                            item.mainHandicap.displayFlag = item.mainHandicap.display === 'YES';
-                            item.mainHandicapList = JSON.parse(item.handicapList[0].odds.content);
-                        }
-                        item.asiaHandicap = item.handicapList.find(item => {
-                            return item.handicapType === 'asian_lines_asian_handicap';
-                        });
-                        if (item.asiaHandicap) {
-                            item.asiaHandicap.displayFlag = item.asiaHandicap.display === 'YES';
-                            item.asiaHandicapList = JSON.parse(item.handicapList[1].odds.content);
-                        }
-                    }
-                    return item;
-                })
-            }
         },
         methods: {
             change (handicap) {
@@ -164,14 +137,7 @@
             dayjs: dayjs
         },
         mounted () {
-            console.log(this.data1);
-            this.data1 = this.data1.map(item => {
-                item.date = dayjs(item.kickOffTime).format('YYYY-MM-DD');
-                item.time = dayjs(item.kickOffTime).format('HH:mm');
-                item.homeName = item.homeList[0].name;
-                item.awayName = item.awayList[0].name;
-                return item;
-            })
+            console.log(this.handicapList);
         }
     }
 </script>
