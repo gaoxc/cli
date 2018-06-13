@@ -21,10 +21,10 @@
                 <span>未开始</span>
             </Col>
             <Col span="2">
-                <div class="div3">
+                <div class="div3" v-if="item.handicapList[0]">
                     {{item.handicapList[0].odds.handicapId}}
                 </div>
-                <div class="div2">
+                <div class="div2" v-if="item.handicapList[1]">
                     {{item.handicapList[1].odds.handicapId}}
                 </div>
             </Col>
@@ -38,47 +38,47 @@
             </Col>
             <Col span="2">
                 <div class="div3 flex-span">
-                    <span v-for="i in item.mainHandicapList">{{i.opp}}</span>
+                    <span v-if="item.mainHandicapList" v-for="i in item.mainHandicapList">{{i.opp}}</span>
                     <!-- <span>2</span>
                     <span>x</span> -->
                 </div>
                 <div class="div2 flex-span">
-                    <span v-for="i in item.asiaHandicapList">{{i.opp}}</span>
+                    <span v-if="item.asiaHandicapList" v-for="i in item.asiaHandicapList">{{i.opp}}</span>
                 </div>
             </Col>
             <Col span="2">
                 <div class="div3 flex-span">
-                    <span v-for="i in item.mainHandicapList">{{i.odds}}</span>
+                    <span v-if="item.mainHandicapList"  v-for="i in item.mainHandicapList">{{i.odds}}</span>
                     <!-- <span>2.18</span>
                     <span>1.0</span> -->
                 </div>
                 <div class="div2 flex-span">
-                    <span v-for="i in item.asiaHandicapList">{{i.odds}}</span>
+                    <span v-if="item.asiaHandicapList" v-for="i in item.asiaHandicapList">{{i.odds}}</span>
                 </div>
             </Col>
             <Col span="3">
-                <div class="div3">
+                <div class="div3" v-if="item.mainHandicap">
                     <span>盘口: {{item.mainHandicap.status === "OPEN" ? '已创建' : '未创建'}}</span>
                     <span>前端: {{item.mainHandicap.display === "YES" ? '显示' : '隐藏'}}</span>
                 </div>
-                <div class="div2">
+                <div class="div2" v-if="item.asiaHandicap">
                     <span>盘口: {{item.asiaHandicap.status === "OPEN" ? '已创建' : '未创建'}}</span>
                     <span>前端: {{item.asiaHandicap.display === "YES" ? '显示' : '隐藏'}}</span>
                 </div>
             </Col>
             <Col span="4">
-                <div class="div3 flex-span">
+                <div class="div3 flex-span" v-if="item.mainHandicap">
                     <Button type="primary" :disabled="item.mainHandicap.status !== 'INIT'">立即手动动创建</Button>
                 </div>
-                <div class="div2 flex-span">
+                <div class="div2 flex-span" v-if="item.asiaHandicap">
                     <Button type="primary" :disabled="item.asiaHandicap.status !== 'INIT'">立即手动动创建</Button>
                 </div>
             </Col>
             <Col span="3">
-                <div class="div3">
+                <div class="div3" v-if="item.mainHandicap">
                     <i-switch v-model="item.mainHandicap.displayFlag" @on-change="change(item.mainHandicap)" style="z-index:10"></i-switch>
                 </div>
-                <div class="div2">
+                <div class="div2" v-if="item.asiaHandicap">
                     <i-switch v-model="item.asiaHandicap.displayFlag" @on-change="change(item.asiaHandicap)" style="z-index:10"></i-switch>
                 </div>
             </Col>

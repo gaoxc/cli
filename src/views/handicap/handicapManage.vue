@@ -77,6 +77,10 @@
                     }
                 })
                 .then((res) => {
+                    if (res.data.errorCode !== 0) {
+                        this.$Message.error(res.data.errorMsg);
+                        return;
+                    }
                     this.handicapList = res.data.data;
                     this.handicapList.map(item => {
                         item.date = dayjs(item.kickOffTime).format('YYYY-MM-DD');
@@ -85,19 +89,24 @@
                         item.homeName = item.homeList[0].name;
                         item.awayName = item.awayList[0].name;
                         if (item.handicapList.length > 0) {
-                            item.mainHandicap = item.handicapList.find(item => {
-                                return item.handicapType === 'main_full_time_resul';
+                            // item.handicapList.forEach((ele) => {
+                            //     if (i.handicapType === 'main_full_time_result') {
+
+                            //     }
+                            // })
+                            item.mainHandicap = item.handicapList.find(i => {
+                                return i.handicapType === 'main_full_time_result';
                             });
                             if (item.mainHandicap) {
                                 item.mainHandicap.displayFlag = item.mainHandicap.display === 'YES';
-                                item.mainHandicapList = JSON.parse(item.handicapList[0].odds.content);
+                                item.mainHandicapList = JSON.parse(item.mainHandicap.odds.content);
                             }
-                            item.asiaHandicap = item.handicapList.find(item => {
-                                return item.handicapType === 'asian_lines_asian_handicap';
+                            item.asiaHandicap = item.handicapList.find(i => {
+                                return i.handicapType === 'asian_lines_asian_handicap';
                             });
                             if (item.asiaHandicap) {
                                 item.asiaHandicap.displayFlag = item.asiaHandicap.display === 'YES';
-                                item.asiaHandicapList = JSON.parse(item.handicapList[1].odds.content);
+                                item.asiaHandicapList = JSON.parse(item.asiaHandicap.odds.content);
                             }
                         }
                         return item;

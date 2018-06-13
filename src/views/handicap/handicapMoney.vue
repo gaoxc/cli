@@ -27,10 +27,10 @@
                 <span>{{item.homeList[0].name}} - {{item.awayList[0].name}}</span>
             </Col>
             <Col span="3">
-                <div class="div3">
+                <div class="div3" v-if="item.handicapList[0]">
                     {{item.handicapList[0] && item.handicapList[0].handicapFundDisplay && item.handicapList[0].handicapFundDisplay.handicapId}}
                 </div>
-                <div class="div2">
+                <div class="div2" v-if="item.handicapList[1]">
                     {{item.handicapList[1] && item.handicapList[1].handicapFundDisplay && item.handicapList[1].handicapFundDisplay.handicapId}}
                 </div>
             </Col>
@@ -44,7 +44,7 @@
             </Col>
             <Col span="10">
                 <div class="div3">
-                    <div class="flex-span">
+                    <div class="flex-span" v-if="item.handicapList[0]">
                         <span>1</span>
                         <span>{{item.handicapList[0].handicapFundDisplay.bettingMap[0] && item.handicapList[0].handicapFundDisplay.bettingMap[0].totalAcc}}
                         </span>
@@ -52,7 +52,7 @@
                         <span>{{item.handicapList[0].handicapFundDisplay.bettingMap[0] && item.handicapList[0].handicapFundDisplay.bettingMap[0].stlRetTokenAmtSumTotal}}</span>
                         <span>{{item.handicapList[0].handicapFundDisplay.bettingMap[0] && item.handicapList[0].handicapFundDisplay.bettingMap[0].profitAmt}}</span>
                     </div>
-                    <div class="flex-span">
+                    <div class="flex-span" v-if="item.handicapList[0]">
                         <span>x</span>
                         <span>{{item.handicapList[0].handicapFundDisplay.bettingMap[1] && item.handicapList[0].handicapFundDisplay.bettingMap[1].totalAcc}}
                         </span>
@@ -60,7 +60,7 @@
                         <span>{{item.handicapList[0].handicapFundDisplay.bettingMap[1] && item.handicapList[0].handicapFundDisplay.bettingMap[1].stlRetTokenAmtSumTotal}}</span>
                         <span>{{item.handicapList[0].handicapFundDisplay.bettingMap[1] && item.handicapList[0].handicapFundDisplay.bettingMap[1].profitAmt}}</span>
                     </div>
-                    <div class="flex-span">
+                    <div class="flex-span" v-if="item.handicapList[0]">
                         <span>2</span>
                         <span>{{item.handicapList[0].handicapFundDisplay.bettingMap[2] && item.handicapList[0].handicapFundDisplay.bettingMap[2].totalAcc}}
                         </span>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="div2">
-                    <div class="flex-span">
+                    <div class="flex-span" v-if="item.handicapList[1]">
                         <span>
                             +1.0, +1.5
                         </span>
@@ -80,7 +80,7 @@
                         <span>{{item.handicapList[1].handicapFundDisplay.bettingMap[0] && item.handicapList[1].handicapFundDisplay.bettingMap[0].stlRetTokenAmtSumTotal}}</span>
                         <span>{{item.handicapList[1].handicapFundDisplay.bettingMap[0] && item.handicapList[1].handicapFundDisplay.bettingMap[0].profitAmt}}</span>
                     </div>
-                    <div class="flex-span">
+                    <div class="flex-span" v-if="item.handicapList[1]">
                         <span>-1.0, -1.5</span>
                         <span>{{item.handicapList[1].handicapFundDisplay.bettingMap[1] && item.handicapList[1].handicapFundDisplay.bettingMap[1].totalAcc}}
                         </span>

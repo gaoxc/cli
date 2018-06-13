@@ -9,20 +9,20 @@
             <Col span="2">赔率</Col>
             <Col span="4">盘口状态</Col>
         </Row>
-        <Row type="flex" justify="center" class="table-row" v-for="item in openData" v-if="item.handicapList.length > 0">
+        <Row type="flex" justify="center" class="table-row" v-for="item in handicapList" v-if="item.handicapList.length > 0">
             <Col span="4">
                 <span>{{dayjs(item.kickOffTime).format('YYYY-MM-DD')}}</span>
                 <span>{{dayjs(item.kickOffTime).format('HH:mm')}}</span>
             </Col>
             <Col span="4">
                 <span>{{item.homeList[0].name}} - {{item.awayList[0].name}}</span>
-                <span>未开始</span>
+                <span>已关闭</span>
             </Col>
             <Col span="4">
-                <div class="div3">
+                <div class="div3" v-if="item.handicapList[0]">
                     {{item.handicapList[0].odds.handicapId}}
                 </div>
-                <div class="div2">
+                <div class="div2" v-if="item.handicapList[1]">
                     {{item.handicapList[1].odds.handicapId}}
                 </div>
             </Col>
@@ -50,16 +50,16 @@
                     <!-- <span>2.18</span>
                     <span>1.0</span> -->
                 </div>
-                <div class="div2 flex-span">
+                <div class="div2 flex-span" >
                     <span v-for="i in item.asiaHandicapList">{{i.odds}}</span>
                 </div>
             </Col>
             <Col span="4">
-                <div class="div3">
+                <div class="div3" v-if="item.mainHandicap">
                     <span>盘口: {{item.mainHandicap.status === "OPEN" ? '已创建' : '未创建'}}</span>
                     <span>前端: {{item.mainHandicap.display === "YES" ? '显示' : '隐藏'}}</span>
                 </div>
-                <div class="div2">
+                <div class="div2" v-if="item.asiaHandicap">
                     <span>盘口: {{item.asiaHandicap.status === "OPEN" ? '已创建' : '未创建'}}</span>
                     <span>前端: {{item.asiaHandicap.display === "YES" ? '显示' : '隐藏'}}</span>
                 </div>
@@ -72,7 +72,7 @@
     import store from 'store';
     export default {
         props: {
-            data1:{
+            handicapList:{
                 default: []
             }
         },
@@ -138,13 +138,13 @@
         },
         mounted () {
             console.log(this.data1);
-            this.data1 = this.data1.map(item => {
-                item.date = dayjs(item.kickOffTime).format('YYYY-MM-DD');
-                item.time = dayjs(item.kickOffTime).format('HH:mm');
-                item.homeName = item.homeList[0].name;
-                item.awayName = item.awayList[0].name;
-                return item;
-            })
+            // this.data1 = this.data1.map(item => {
+            //     item.date = dayjs(item.kickOffTime).format('YYYY-MM-DD');
+            //     item.time = dayjs(item.kickOffTime).format('HH:mm');
+            //     item.homeName = item.homeList[0].name;
+            //     item.awayName = item.awayList[0].name;
+            //     return item;
+            // })
         }
     }
 </script>
